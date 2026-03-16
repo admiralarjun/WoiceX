@@ -15,3 +15,11 @@ def create_token(user_id):
         settings.jwt_secret,
         algorithm="HS256"
     )
+
+def decode_token(token: str):
+    payload = jwt.decode(
+        token,
+        settings.jwt_secret,
+        algorithms=["HS256"]
+    )
+    return payload.get("sub")

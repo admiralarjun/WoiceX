@@ -1,7 +1,10 @@
-import { GoogleLogin } from '@react-oauth/google'
-import axios from "axios"
+import { useState } from 'react';
+import LandingPage from './components/LandingPage';
+import VoiceInterface from './components/VoiceInterface';
+import axios from "axios";
 
 function App() {
+  const [token, setToken] = useState(localStorage.getItem('jwt'));
 
   const handleSuccess = async (credentialResponse) => {
 
@@ -13,19 +16,19 @@ function App() {
     )
 
     localStorage.setItem("jwt", res.data.access_token)
+    setToken(res.data.access_token)
   }
 
-  return (
-    <div>
-      <h1>Login</h1>
+  const handleLogout = () => {
+    localStorage.removeItem("jwt");
+    setToken(null);
+  }
 
-      <GoogleLogin
-        onSuccess={handleSuccess}
-        onError={() => console.log("Login Failed")}
-      />
+  if (token) {
+    return <VoiceInterface token={token} onLogout={handleLogout} />;
+  }
 
-    </div>
-  )
+  return <LandingPage onLoginSuccess={handleSuccess} />;
 }
 
 export default App
