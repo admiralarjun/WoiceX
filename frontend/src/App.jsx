@@ -14,7 +14,7 @@ function App() {
         token: credentialResponse.credential
       }
     )
-
+    console.log(res.data)
     localStorage.setItem("jwt", res.data.access_token)
     setToken(res.data.access_token)
   }
